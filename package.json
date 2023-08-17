@@ -1,0 +1,33 @@
+{
+  "name": "node-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "build": "npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Louis-jk/node-cli.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Louis-jk/node-cli/issues"
+  },
+  "homepage": "https://github.com/Louis-jk/node-cli#readme",
+  "dependencies": {
+    "@openzeppelin/merkle-tree": "^1.0.5",
+    "@types/figlet": "^1.5.6",
+    "commander": "^11.0.0",
+    "figlet": "^1.6.0",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}
