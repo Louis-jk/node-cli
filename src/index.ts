@@ -1,8 +1,10 @@
+#! /usr/bin/env node
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree';
 import fs from 'fs';
 import path from 'path';
 import { Command } from 'commander';
 import figlet from 'figlet';
+import readXlsxFile from 'read-excel-file/node';
 
 const program = new Command();
 
@@ -13,7 +15,7 @@ program
   .description('An example CLI for merkle tree managing a directory')
   .option('-l, --ls  [value]', 'List directory contents')
   .option('-m, --mkdir <value>', 'Create a directory')
-  .option('-t, --touch <value>', 'Create a file')
+  .option('-t, --touch <value>', 'Create a merkle-tree json file')
   .parse(process.argv);
 
 const options = program.opts();
@@ -42,10 +44,35 @@ function createDir(filepath: string) {
   }
 }
 
-// create the following function
-function createFile(filepath: string) {
-  fs.openSync(filepath, 'w');
-  console.log('An empty file has been created');
+async function createFile(filepath: string) {
+  try {
+    readXlsxFile(filepath).then((rows) => {
+      if (rows[0][0] !== 'address' || rows[0][1] !== 'amount') {
+        console.error('間違った形式です！');
+        return false;
+      }
+
+      const values = rows.filter((el, index) => index !== 0);
+
+      const tree = StandardMerkleTree.of(values, ['address', 'uint256']);
+
+      fs.writeFileSync('treeRoot.txt', tree.root);
+      fs.writeFileSync('tree.json', JSON.stringify(tree.dump()));
+
+      console.log('Allow List is?\n', values);
+      console.log('\n************************************************\n');
+      console.log('Merkle Root:\n', tree.root);
+      console.log(
+        '\nThe merkle tree root text file has been created successfully! (treeRoot.txt)'
+      );
+      console.log(
+        '\nThe merkle tree json file has been created successfully!!(tree.json)\n'
+      );
+      console.log('************************************************');
+    });
+  } catch (error) {
+    console.error('This is not correct path or file(.xlsx)');
+  }
 }
 
 if (options.ls) {
@@ -62,17 +89,3 @@ if (options.touch) {
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
-// // (1)
-// const values = [
-//   ['0x1111111111111111111111111111111111111111', '5000000000000000000'],
-//   ['0x2222222222222222222222222222222222222222', '2500000000000000000'],
-// ];
-
-// // (2)
-// const tree = StandardMerkleTree.of(values, ['address', 'uint256']);
-
-// // (3)
-// console.log('Merkle Root:', tree.root);
-
-// // (4)
-// fs.writeFileSync('tree.json', JSON.stringify(tree.dump()));
