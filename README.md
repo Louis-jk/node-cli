@@ -24,7 +24,7 @@ npm install -g
 merklemanager
 ```
 
-![Alt text](image.png)
+![Alt text](image-5.png)
 
 ```bash
 merklemanager -t <Your excel file path>
@@ -32,7 +32,7 @@ merklemanager -t <Your excel file path>
 
 then 「tree.json」file and 「treeRoot.txt」 file are created.
 
-![Alt text](image-2.png)
+![Alt text](image-6.png)
 
 ### Form & Extension
 
